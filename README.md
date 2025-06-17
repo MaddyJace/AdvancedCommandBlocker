@@ -159,4 +159,10 @@ rules:
       - "/tp <n:t> <n:t> <n:f>"
       - "/help*"
 ```
+## License
+
+This project is licensed under the **Creative Commons BY-NC 4.0 License**.  
+You are free to use, modify, and share it **for non-commercial purposes only**.
+
+Full license: [https://creativecommons.org/licenses/by-nc/4.0](https://creativecommons.org/licenses/by-nc/4.0/)
 
