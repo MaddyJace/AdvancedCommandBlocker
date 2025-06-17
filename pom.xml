@@ -69,15 +69,6 @@
       </dependency>
 
 
-
-      <dependency>
-          <groupId>org.jetbrains</groupId>
-          <artifactId>annotations</artifactId>
-          <version>24.0.0</version>
-          <scope>system</scope>
-          <systemPath>${project.basedir}/libs/annotations-24.0.0.jar</systemPath>
-      </dependency>
-
       <dependency>
           <groupId>me.clip</groupId>
           <artifactId>PlaceholderAPI</artifactId>
