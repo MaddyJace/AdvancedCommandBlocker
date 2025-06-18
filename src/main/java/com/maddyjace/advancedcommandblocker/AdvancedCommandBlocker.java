@@ -7,13 +7,20 @@ import com.maddyjace.advancedcommandblocker.Listener.TabCompleteListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 public final class AdvancedCommandBlocker extends JavaPlugin {
 
     @Override
     public void onEnable() {
 
-        saveDefaultConfig();
-        saveResource("zh_cn-config.yml", false);
+        // 首次启动加载config.yml 和 zh_cn-config.yml 文件。
+        // 单独删除不会触发，zh_cn-config.yml文件的载入。
+        File configFile = new File(getDataFolder(), "config.yml");
+        if (!configFile.exists()) {
+            saveDefaultConfig();
+            saveResource("zh_cn-config.yml", false);
+        }
 
         ConfigFileData.INSTANCE.initialize(this);
 

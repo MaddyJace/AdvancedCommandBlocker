@@ -1,8 +1,0 @@
-com\maddyjace\advancedcommandblocker\AdvancedCommandBlocker.class
-com\maddyjace\advancedcommandblocker\Utility\UtilityPackage.class
-com\maddyjace\advancedcommandblocker\Listener\PlayerCommandSendListener.class
-com\maddyjace\advancedcommandblocker\Listener\PlayerCommandPreprocessListener.class
-com\maddyjace\advancedcommandblocker\Utility\PlaceholderAPI.class
-com\maddyjace\advancedcommandblocker\Listener\TabCompleteListener.class
-com\maddyjace\advancedcommandblocker\Commands\Commands.class
-com\maddyjace\advancedcommandblocker\ConfigFile\ConfigFileData.class
