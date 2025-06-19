@@ -35,20 +35,32 @@ public class PlayerCommandPreprocessListener implements Listener {
             String blockMessage = rule.getString("blockMessage");
             List<String> commands = rule.getStringList("commands");
 
+            // 判定是否拥有权限（有权限就跳过）
             if (!UtilityPackage.hasPermission(player, permission)) {
+                // 判定处理
                 if (type.equals("blacklist")) {
                     if (UtilityPackage.getRulesCommands(commands, message, type)) {
-                        event.setCancelled(true);
-                        if(PlaceholderAPI.INSTANCE.isPlaceholderAPILoaded()) {
+                        event.setCancelled(true); // 取消事件
+
+                        // 向玩家发送拦截的提示信息
+                        if(PlaceholderAPI.INSTANCE.isPlaceholderAPILoaded() && blockMessage != null) {
                             event.getPlayer().sendMessage(PlaceholderAPI.parsePlaceholders(player, blockMessage));
-                        } else event.getPlayer().sendMessage(blockMessage.replace("&", "§"));
+                        } else if (blockMessage != null) {
+                            event.getPlayer().sendMessage(blockMessage.replace("&", "§"));
+                        }
+
                     }
                 } else if (type.equals("whitelist")) {
                     if (!UtilityPackage.getRulesCommands(commands, message, type)) {
-                        event.setCancelled(true);
-                        if(PlaceholderAPI.INSTANCE.isPlaceholderAPILoaded()) {
+                        event.setCancelled(true); // 取消事件
+
+                        // 向玩家发送拦截的提示信息
+                        if(PlaceholderAPI.INSTANCE.isPlaceholderAPILoaded() && blockMessage != null) {
                             event.getPlayer().sendMessage(PlaceholderAPI.parsePlaceholders(player, blockMessage));
-                        } else event.getPlayer().sendMessage(blockMessage.replace("&", "§"));
+                        } else if (blockMessage != null) {
+                            event.getPlayer().sendMessage(blockMessage.replace("&", "§"));
+                        }
+
                     }
                 }
 
