@@ -35,7 +35,7 @@ public class UtilityPackage {
     }
 
     private static boolean coreProcessingLogic(String[] configCommand, String[] userCommand, boolean b) {
-        if(b && userCommand[0].equals(configCommand[0])) {
+        if(b && userCommand.length >= configCommand.length && userCommand[0].equals(configCommand[0])) {
             for (int i = 0; i < configCommand.length ; i++) {
                 if(UtilityPackage.isNumber(userCommand[i])) {
                     if(configCommand[i].equals("<n:f>")) {
