@@ -4,7 +4,7 @@
   <groupId>com.MaddyJace</groupId>
   <artifactId>AdvancedCommandBlocker</artifactId>
   <name>AdvancedCommandBlocker</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.5</version>
   <build>
     <resources>
       <resource>

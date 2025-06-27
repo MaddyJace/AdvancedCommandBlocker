@@ -1,16 +1,42 @@
-## 🚫 AdvancedCommandBlocker
+# 🚫AdvancedCommandBlocker Plugin Overview
+**AdvancedCommandBlocker** is designed to intercept players from using specific or certain commands with Tab completion. It features simple configuration and powerful functionality. It can precisely block static commands (e.g.: /help) and dynamic commands (e.g.:
+/tp `<player>`). The plugin supports regular expression rules in various scenarios. The plugin was originally developed because I found that the classic command-blocking plugins on the market couldn't meet the needs of my server, so I developed this plugin. If you're looking for a similar plugin, feel free to check it out.
 
-- Based on Bukkit and Spigot APIs. Supports Minecraft 1.12.2 to 1.21.1+ and future versions.
+> English [README.md](./README.md)
 
-## ✨ Features
-- 🔒 Block specific commands by exact match, prefix, or regex
-- 👥 Apply different rules per player group or permission
-- 🌐 Supports PlaceholderAPI and custom deny messages
-- 🧩 Fully configurable via YAML
-- 🔄 Reloadable in-game without restarting the server
+> 中文简体 [CN-README.md](./zh-cn_README.md)
+---
+## 📦 Plugin Features
+- Supports applying different rules for each player group or permission.
+- Blocks specific commands via exact match, prefix, or regular expression.
+- Supports custom (supports: PlaceholderAPI) messages after blocking, per player group.
+- Automatically reloads the configuration file when the YML file changes, no need to restart the server or manually input reload commands.
+---
 
-## ⚙️ US Example Configuration
+# ⚙️ AdvancedCommandBlocker Configuration Guide
+> [config.yml](src/main/resources/config.yml)
 
+### `✅rules:` # Intercept player commands
+- `fallSubCommands:` # You can customize the group name
+    - `type: ` `BLACKLIST`&`WHITELIST`
+    - `permission:`         # Permission
+    - `blockMessage: Hello` # Prompt message
+    - `commands:` # Available parameters `*`,`<s:t>`,`<n:t>`
+        - "/help*"                              # Corresponds to blocking `/help ALL`
+        - "/tp `<s:t>` `<s:f>`"                 # Corresponds to blocking `/tp Player Steve`
+        - "/tp `<s:t>` `<n:t>` `<n:t>` `<n:f>`" # Corresponds to blocking `/tp Player 0 0 0` command
+
+- `tab:` # You can customize the group name
+    - `type: ` `HIDE_TAB_BLACKLIST`&`HIDE_TAB_WHITELIST`
+    - `permission:`         # Permission
+    - `closeChat: false` # Whether to force close chat
+    - `blockMessage: Hello` # Prompt message
+    - `commands:` # Available parameters `*`,`<s:t>`,`<n:t>`
+        - "/tp `<n:t>` `<n:t>` `<n:f>`"
+        - "/help*"
+---
+
+### Config.yml
 ```yaml
 # Commands for the AdvancedCommandBlocker plugin
 # /acb reload – Reload the configuration!
@@ -81,81 +107,6 @@ rules:
     permission: "acb.tabCommand"
     # In tab mode, the <s:t>, <s:f>, <n:t>, <n:f> and * placeholders work the same way as in command mode.
     commands:
-      - "/tp <n:t> <n:t> <n:f>"
-      - "/help*"
-``` 
-## ⚙️ CN Example Configuration
-
-```yaml
-# AdvancedCommandBlocker插件的命令
-# /acb reload 重载！
-# /advancedcommandblocker reload - Reload the configuration!
-
-rules:
-  allSubCommands:
-    # BLACKLIST（黑名单模式：拦截列出的命令）
-    # WHITELIST（白名单模式：只允许列出的命令）
-    # 警告: 你不能 BLACKLIST 和 WHITELIST 同时配置使用，虽然允许但插件会冲突！
-    type: BLACKLIST
-    # 当玩家拥有此权限后，插件不会拦截。
-    permission: "cab.allSubCommands"
-    # 当拦截成功后提示给玩家的信息，支持使用PlaceholderAPI占位符
-    blockMessage: "&l&8| &c错误 &8» &c你没有权限使用该命令。"
-    commands:
-      # - "/help*"
-      # *是拦截所有以 /help 开头的命令。
-      - "/help*"
-
-  commands:
-    # BLACKLIST（黑名单模式：拦截列出的命令）
-    # WHITELIST（白名单模式：只允许列出的命令）
-    # 警告: 你不能 BLACKLIST 和 WHITELIST 同时配置使用，虽然允许但插件会冲突！
-    type: BLACKLIST
-    # 当玩家拥有此权限后，插件不会拦截。
-    permission: "cab.command"
-    # 当拦截成功后提示给玩家的信息，支持使用PlaceholderAPI占位符
-    blockMessage: "&l&8| &c错误 &8» &c你没有权限使用bukkit命令。"
-    commands:
-      # - "/bukkit:?"
-      # 当玩家输入 /bukkit:? 使会被拦截。
-      - "/bukkit:?"
-      - "/plugins"
-
-  tp:
-    # BLACKLIST（黑名单模式：拦截列出的命令）
-    # WHITELIST（白名单模式：只允许列出的命令）
-    # 警告: 你不能 BLACKLIST 和 WHITELIST 同时配置使用，虽然允许但插件会冲突！
-    type: BLACKLIST
-    # 当玩家拥有此权限后，插件不会拦截。
-    permission: "acb.tpCommand"
-    # 当拦截成功后提示给玩家的信息，支持使用PlaceholderAPI占位符
-    blockMessage: "&l&8| &c错误 &8» &c你没有权限使用tp命令。"
-    commands:
-      # - "/tp <s:t> <s:f>"
-      # <s:t>是true文本占位符，<s:f>是false文本占位符
-      # 说明: 当玩家尝试输入 /tp player01 player02 时会被拦截，但输入 /tp player01 不会拦截。
-
-      # - "/tp <s:t> <n:t> <n:t> <n:f>"
-      # <n:t>是true数字占位符，<n:f>是false数字占位符
-      # 说明: 当玩家尝试输入 /tp player01 0 0 10 时会被拦截，但输入 /tp player01 0 0 不会拦截。
-      #      玩家不能使用 /tp player01 player02 和 /tp player01 0 0 10 但可以使用 /tp 0 0 10 除非你更明确的拦截。
-      # 数字占位符支持: "123" "-45.6" "~" "~0" "~1.23" "1e10" "1.8e308"
-
-      # 所以你想命令的第几个参数开始拦截(参数就是以空格隔开，如: /tp player01 player02 就是三个参数)，就使用占位符。
-      - "/tp <s:t> <s:f>"
-      - "/tp <s:t> <n:t> <n:t> <n:f>"
-
-  tab:
-    # HIDE_TAB_BLACKLIST（黑名单模式：隐藏列出的命令的补全，但不拦截其执行）
-    # HIDE_TAB_WHITELIST（白名单模式：只允列出的命令的补全，但不拦截其执行）
-    # 警告: 你不能 HIDE_TAB_BLACKLIST 和 HIDE_TAB_WHITELIST 同时配置使用，虽然允许但插件会冲突！
-    type: HIDE_TAB_BLACKLIST
-    # 强制关闭玩家的聊天栏，true强制关闭并拦截Tab键，false不关闭并拦截Tab键
-    closeChat: false
-    # 当玩家拥有此权限时，使用Tab键时不会被拦截。
-    permission: "acb.tabCommand"
-    commands:
-      # commands的 <s:t> <s:f> 和 <n:t> <n:f> 以及 * 占位符在Tab模式下也能使用，不再重复说明。
       - "/tp <n:t> <n:t> <n:f>"
       - "/help*"
 ```

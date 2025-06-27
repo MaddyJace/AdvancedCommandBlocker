@@ -2,20 +2,37 @@ package com.maddyjace.advancedcommandblocker;
 
 import com.maddyjace.advancedcommandblocker.Commands.Commands;
 import com.maddyjace.advancedcommandblocker.ConfigFile.ConfigFileData;
+import com.maddyjace.advancedcommandblocker.ConfigFile.FileWatcher;
 import com.maddyjace.advancedcommandblocker.Listener.PlayerCommandPreprocessListener;
 import com.maddyjace.advancedcommandblocker.Listener.TabCompleteListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class AdvancedCommandBlocker extends JavaPlugin {
+import java.io.File;
 
+public final class AdvancedCommandBlocker extends JavaPlugin {
+    private FileWatcher watcher;
     @Override
     public void onEnable() {
 
-        saveDefaultConfig();
-        saveResource("zh_cn-config.yml", false);
+        File configFile = new File(getDataFolder(), "config.yml");
+        if (!configFile.exists()) {
+            saveResource("config.yml", false);
+            saveResource("zh-cn_config.yml", false);
+        }
 
+        // 初始化
         ConfigFileData.INSTANCE.initialize(this);
+
+        // 初始化 FileWatcher 类
+        watcher = new FileWatcher(getDataFolder().getAbsolutePath(), ".yml", 100);
+
+        // 开启文件监听
+        try {
+            watcher.start();
+        } catch (Exception e) {
+            getLogger().warning("The automatic reload function failed to enable!");
+        }
 
         getServer().getPluginManager().registerEvents(new PlayerCommandPreprocessListener(this), this);
         getServer().getPluginManager().registerEvents(new TabCompleteListener(), this);
@@ -43,7 +60,12 @@ public final class AdvancedCommandBlocker extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        // 关闭文件监听
+        try {
+            watcher.stop();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
